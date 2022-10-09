@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 25.0.1703.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MineSweeper", "MineSweeper\MineSweeper.csproj", "{5093C307-6F0B-4E50-9EED-0E9BF81C0D6F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gemini.Cgi", "..\Gemini.Cgi\Gemini.Cgi.csproj", "{714FFA80-9658-496B-B11E-17EBEB97A6EC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MineSweeper.Cgi", "MineSweeper.Cgi\MineSweeper.Cgi.csproj", "{0849FDAA-5C68-4116-AAC4-3CC29947408B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5093C307-6F0B-4E50-9EED-0E9BF81C0D6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5093C307-6F0B-4E50-9EED-0E9BF81C0D6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5093C307-6F0B-4E50-9EED-0E9BF81C0D6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5093C307-6F0B-4E50-9EED-0E9BF81C0D6F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{714FFA80-9658-496B-B11E-17EBEB97A6EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{714FFA80-9658-496B-B11E-17EBEB97A6EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{714FFA80-9658-496B-B11E-17EBEB97A6EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{714FFA80-9658-496B-B11E-17EBEB97A6EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0849FDAA-5C68-4116-AAC4-3CC29947408B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0849FDAA-5C68-4116-AAC4-3CC29947408B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0849FDAA-5C68-4116-AAC4-3CC29947408B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0849FDAA-5C68-4116-AAC4-3CC29947408B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AD770811-EC18-4107-90C4-440D26F7EDC3}
+	EndGlobalSection
+EndGlobal
