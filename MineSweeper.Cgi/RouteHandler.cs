@@ -12,11 +12,16 @@ namespace MineSweeper.Cgi
 
             cgi.Success();
 
-            GameState state = new GameState
+            GameState state;
+
+            if (cgi.HasQuery)
             {
-                Board = new Board()
-                //Board = new Board(123)
-            };
+                state = GameState.FromData(cgi.Query);
+            } else
+            {
+                state = GameState.CreateNewGame();
+            }
+
             GameRenderer renderer = new GameRenderer(cgi.Writer);
             renderer.DrawState(state);
             Footer(cgi);

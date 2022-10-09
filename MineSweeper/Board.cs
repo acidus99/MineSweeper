@@ -7,39 +7,29 @@ namespace MineSweeper
         public const byte FLAG = 32;
         public const byte NUMBER_MASK = 15;
 
-        public int Width { get; private set; }
-        public int Height { get; private set; }
+        public byte Width { get; private set; }
+        public byte Height { get; private set; }
 
         public int Mines { get; private set; }
 
         public byte[,] Field;
 
-        public int Seed;
-
-        Random rand;
-
-        public Board()
-            : this(GetSeed())
-        {
-        }
-
-        public Board(int seed)
-        {
-            Seed = seed;
-            Width = 15;
-            Height = 9;
-            rand = new Random(Seed);
-
-            GenerateBoard();
+        public Board( byte width = 15, byte height = 9)
+        { 
+            Width = width;
+            Height = height;
+            Field = new byte[Height, Width];
         }
 
         public static int GetSeed()
             => Convert.ToInt32(DateTime.Now.Ticks & 0xFFFF);
 
-        
-        private void GenerateBoard()
+        public void GenerateNewBoard()
+            => GenerateNewBoard(GetSeed());
+
+        public void GenerateNewBoard(int seed)
         {
-            Field = new byte[Height, Width];
+            Random rand = new Random(seed);
 
             //init board
             for (int y = 0; y < Height; y++)

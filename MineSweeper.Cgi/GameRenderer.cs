@@ -20,7 +20,8 @@ namespace MineSweeper.Cgi
         
             DrawTitle();
             DrawBoard();
-            
+            DrawState();
+
         }
 
         private void DrawBoard()
@@ -89,6 +90,16 @@ namespace MineSweeper.Cgi
             Output.WriteLine($"=> {RouteOptions.HelpUrl} How to play");
         }
 
+        private void DrawState()
+        {
+            var data = State.ToData();
+
+            Output.WriteLine("# State");
+            Output.WriteLine("```");
+            Output.WriteLine(data);
+            Output.WriteLine("```");
+            Output.WriteLine($"=> ?{data} Data in URL");
+        }
 
     }
 }
