@@ -11,7 +11,7 @@ namespace MineSweeper.Cgi
         {
             var router = new CgiRouter();
             router.SetStaticRoot("static/");
-            router.OnRequest("", RouteHandler.PlayGame);
+            router.OnRequest("/play", RouteHandler.PlayGame);
             router.ProcessRequest();
         }
 

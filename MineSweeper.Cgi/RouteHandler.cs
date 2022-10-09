@@ -10,17 +10,18 @@ namespace MineSweeper.Cgi
 		public static void PlayGame(CgiWrapper cgi)
         {
 
-            cgi.Success();
-
             GameState state;
 
-            if (cgi.HasQuery)
-            {
-                state = GameState.FromData(cgi.Query);
-            } else
+            var data = cgi.GetPathInfoParameters("/play/");
+            if(data == null || data.Length != 1)
             {
                 state = GameState.CreateNewGame();
+                cgi.Redirect(RouteOptions.GetPlayUrl(state));
+                return;
             }
+            cgi.Success();
+
+            state = GameState.FromData(data[0]);
 
             GameRenderer renderer = new GameRenderer(cgi.Writer);
             renderer.DrawState(state);

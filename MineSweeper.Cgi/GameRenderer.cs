@@ -87,7 +87,6 @@ namespace MineSweeper.Cgi
         private void DrawTitle()
         {
             Output.WriteLine("# 💣 🧹 MineSweeper?");
-            Output.WriteLine($"=> {RouteOptions.HelpUrl} How to play");
         }
 
         private void DrawState()
@@ -98,7 +97,6 @@ namespace MineSweeper.Cgi
             Output.WriteLine("```");
             Output.WriteLine(data);
             Output.WriteLine("```");
-            Output.WriteLine($"=> ?{data} Data in URL");
         }
 
     }
