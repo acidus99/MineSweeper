@@ -20,6 +20,7 @@ namespace MineSweeper.Cgi
         
             DrawTitle();
             DrawBoard();
+            DrawDebug();
             DrawState();
 
         }
@@ -31,6 +32,66 @@ namespace MineSweeper.Cgi
             DrawColumnLegend();
 
             for(int y =0; y < State.Board.Height; y++)
+            {
+                //draw prefix
+                Output.Write($"{(char)(65 + y)} ");
+                for (int x = 0; x < State.Board.Width; x++)
+                {
+                    byte cellValue = State.Board.Field[y, x];
+
+                    //do we show it?
+                    if ((cellValue & Board.FLAG) == Board.FLAG)
+                    {
+                        Output.Write('F');
+                    }
+                    else if ((cellValue & Board.SHOWN) != Board.SHOWN)
+                    {
+                        Output.Write('.');
+                    } else
+                    {
+                        //is shown!
+                        if ((cellValue & Board.MINE) == Board.MINE)
+                        {
+                            Output.Write('X');
+                        }
+                        else
+                        {
+                            byte count = (byte)(cellValue & Board.NUMBER_MASK);
+
+                            if (count > 0)
+                            {
+                                Output.Write((int)count);
+                            }
+                            else
+                            {
+                                Output.Write(' ');
+                            }
+                        }
+                    }
+                }
+
+                //draw suffix
+                Output.Write($" {(char)(65 + y)}");
+
+
+                Output.WriteLine();
+            }
+            DrawColumnLegend();
+
+            Output.WriteLine("```");
+            Output.WriteLine();
+            Output.WriteLine($"=> {RouteOptions.ClickUrl(State)} Click");
+        }
+
+        private void DrawDebug()
+        {
+
+            Output.WriteLine("## Debug Output");
+            Output.WriteLine("``` Full Game board");
+
+            DrawColumnLegend();
+
+            for (int y = 0; y < State.Board.Height; y++)
             {
                 //draw prefix
                 Output.Write($"{(char)(65 + y)} ");

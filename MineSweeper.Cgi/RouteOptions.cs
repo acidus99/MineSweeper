@@ -5,15 +5,18 @@ namespace MineSweeper.Cgi
 	public static class RouteOptions
 	{
 		private const string BaseCgiPath = "/cgi-bin/mines.cgi";
-		public const string PlayUrl = BaseCgiPath + "/play/";
 
-		public static string GetPlayUrl(GameState state)
-        {
-			var raw = state.ToData();
-			var enc = WebUtility.UrlEncode(raw);
-			return $"{PlayUrl}{enc}/";
-        }
-			
+        public const string StartUrl = BaseCgiPath + StartRoute;
+
+        public const string ClickRoute = "/click/";
+        public const string PlayRoute = "/play/";
+        public const string StartRoute = "/start/";
+
+        public static string PlayUrl(GameState state)
+            => $"{BaseCgiPath}{PlayRoute}{WebUtility.UrlEncode(state.ToData())}/";
+
+		public static string ClickUrl(GameState state)
+            => $"{BaseCgiPath}{ClickRoute}{WebUtility.UrlEncode(state.ToData())}/";
 
 	}
 }

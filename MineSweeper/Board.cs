@@ -5,6 +5,7 @@ namespace MineSweeper
     {
         public const byte MINE = 64;
         public const byte FLAG = 32;
+        public const byte SHOWN = 128;
         public const byte NUMBER_MASK = 15;
 
         public byte Width { get; private set; }

@@ -26,7 +26,9 @@ namespace MineSweeper
 
         public static GameState FromData(string base64Data)
         {
-            byte[] data = GzipUtils.Decompress(Convert.FromBase64String(base64Data));
+            var decoded = Convert.FromBase64String(base64Data);
+            byte[] data = GzipUtils.Decompress(decoded);
+
             if (data[0] != '|' || data[3] != '|')
             {
                 return new GameState
@@ -34,6 +36,7 @@ namespace MineSweeper
                     IsValid = false
                 };
             }
+
             var board = new Board(data[1], data[2]);
             int index = 4;
             for (int y = 0; y < board.Height; y++)
