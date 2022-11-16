@@ -63,7 +63,7 @@ namespace MineSweeper.Cgi
                     }
                     else if (!State.Board.IsShown(row, column))
                     {
-                        Output.Write('.');
+                        Output.Write('·');
                     }
                     else
                     { 
@@ -77,7 +77,7 @@ namespace MineSweeper.Cgi
                             int adjacentMines = State.Board.AdjacentMineCount(row, column);
                             if(adjacentMines == 0)
                             {
-                                Output.Write('█');
+                                Output.Write(' ');
                             } else
                             {
                                 Output.Write(adjacentMines);
