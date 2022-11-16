@@ -1,12 +1,14 @@
 ﻿using System;
+using System.Data.Common;
+
 namespace MineSweeper
 {
     public class Board
     {
-        public const byte MINE = 64;
-        public const byte FLAG = 32;
-        public const byte SHOWN = 128;
-        public const byte NUMBER_MASK = 15;
+        const byte MINE = 64;
+        const byte FLAG = 32;
+        const byte SHOWN = 128;
+        const byte NUMBER_MASK = 15;
 
         public byte Width { get; private set; }
         public byte Height { get; private set; }
@@ -65,7 +67,7 @@ namespace MineSweeper
                         {
                             for (int mx = -1; mx < 2; mx++)
                             {
-                                if (CheckMine(y + my, x + mx))
+                                if (IsMine(y + my, x + mx))
                                 {
                                     count++;
                                 }
@@ -78,15 +80,48 @@ namespace MineSweeper
 
         }
 
-        private bool CheckMine(int row, int column)
+        //is the tile a mine?
+        public bool IsMine(int row, int column)
+            => !IsInBounds(row, column) ? false : TileHasProperty(row, column, MINE);
+
+        //is the tile visible?
+        public bool IsShown(int row, int column)
+            => !IsInBounds(row, column) ? false : TileHasProperty(row, column, SHOWN);
+
+        //does the tile have a flag on it?
+        public bool IsFlag(int row, int column)
+            => !IsInBounds(row, column) ? false : TileHasProperty(row, column, FLAG);
+
+        public bool IsInBounds(int row, int column)
+            => IsValidRow(row) && IsValidColumn(column);
+
+        public bool IsValidRow(int row)
+            => row >= 0 && row < Height;
+
+        public bool IsValidColumn(int column)
+            => column>= 0 && column< Width;
+
+        public int AdjacentMineCount(int row, int column)
         {
-            if (row < 0 || row >= Height || column < 0 || column >= Width)
+            if(!IsInBounds(row, column))
             {
-                //outside the the board
-                return false;
+                return 0;
             }
-            return (Field[row, column] == MINE);
-        }            
+            return (Field[row, column] & Board.NUMBER_MASK);
+        }
+
+        public void MarkAsShown(int row, int column)
+        {
+            Field[row, column] = (byte)(Field[row, column] | Board.SHOWN);
+        }
+
+        public void ToggleFlag(int row, int column)
+        {
+            Field[row, column] = (byte)(Field[row, column] ^ Board.FLAG);
+        }
+
+        private bool TileHasProperty(int row, int column, byte property)
+            => (Field[row, column] & property) == property;
 
     }
 }

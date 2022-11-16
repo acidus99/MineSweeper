@@ -13,7 +13,8 @@ namespace MineSweeper.Cgi
             router.SetStaticRoot("static/");
             router.OnRequest(RouteOptions.StartRoute, RouteHandler.StartGame);
             router.OnRequest(RouteOptions.PlayRoute, RouteHandler.PlayGame);
-            router.OnRequest(RouteOptions.ClickRoute, RouteHandler.Click);
+            router.OnRequest(RouteOptions.ClickRoute, RouteHandler.ClickTile);
+            router.OnRequest(RouteOptions.FlagRoute, RouteHandler.ToggleFlag);
             router.ProcessRequest();
         }
     }

@@ -19,10 +19,29 @@ namespace MineSweeper.Cgi
             State = state;
         
             DrawTitle();
+            DrawStatus();
             DrawBoard();
             DrawDebug();
-            DrawState();
+        }
 
+
+        private void DrawStatus()
+        {
+            if(State.IsComplete)
+            {
+                if(State.HasHitMine)
+                {
+                    Output.WriteLine("## 😧 💥 ☠️ ⚰️ 🪦");
+                    Output.WriteLine("## You clicked on a mine! You are dead!");
+                    Output.WriteLine($"Mines Cleared {State.ClearedMines}");
+                } else
+                {
+                    Output.WriteLine("## 🎉🎉 You Win! 🎉🎉 ");
+                }
+            } else
+            {
+                Output.WriteLine($"Flags: {State.TotalFlags} Total Mines: {State.TotalMines}");
+            }
         }
 
         private void DrawBoard()
@@ -31,48 +50,44 @@ namespace MineSweeper.Cgi
 
             DrawColumnLegend();
 
-            for(int y =0; y < State.Board.Height; y++)
+            for(int row =0; row < State.Board.Height; row++)
             {
                 //draw prefix
-                Output.Write($"{(char)(65 + y)} ");
-                for (int x = 0; x < State.Board.Width; x++)
+                Output.Write($"{(char)(65 + row)} ");
+                for (int column = 0; column < State.Board.Width; column++)
                 {
-                    byte cellValue = State.Board.Field[y, x];
-
                     //do we show it?
-                    if ((cellValue & Board.FLAG) == Board.FLAG)
+                    if (State.Board.IsFlag(row, column))
                     {
-                        Output.Write('F');
+                        Output.Write('★');
                     }
-                    else if ((cellValue & Board.SHOWN) != Board.SHOWN)
+                    else if (!State.Board.IsShown(row, column))
                     {
                         Output.Write('.');
-                    } else
-                    {
+                    }
+                    else
+                    { 
                         //is shown!
-                        if ((cellValue & Board.MINE) == Board.MINE)
+                        if (State.Board.IsMine(row, column))
                         {
-                            Output.Write('X');
+                            Output.Write('M');
                         }
                         else
                         {
-                            byte count = (byte)(cellValue & Board.NUMBER_MASK);
-
-                            if (count > 0)
+                            int adjacentMines = State.Board.AdjacentMineCount(row, column);
+                            if(adjacentMines == 0)
                             {
-                                Output.Write((int)count);
-                            }
-                            else
+                                Output.Write('█');
+                            } else
                             {
-                                Output.Write(' ');
+                                Output.Write(adjacentMines);
                             }
                         }
                     }
                 }
 
                 //draw suffix
-                Output.Write($" {(char)(65 + y)}");
-
+                Output.Write($" {(char)(65 + row)}");
 
                 Output.WriteLine();
             }
@@ -80,55 +95,54 @@ namespace MineSweeper.Cgi
 
             Output.WriteLine("```");
             Output.WriteLine();
-            Output.WriteLine($"=> {RouteOptions.ClickUrl(State)} Click");
+            if (!State.IsComplete)
+            {
+                Output.WriteLine($"=> {RouteOptions.ClickUrl(State)} Click Tile 🤞");
+                Output.WriteLine($"=> {RouteOptions.FlagUrl(State)} Place Flag 🚩");
+            }
         }
 
         private void DrawDebug()
         {
 
             Output.WriteLine("## Debug Output");
+            Output.WriteLine($"IsComplete:\t{State.IsComplete}");
+            Output.WriteLine($"HasHitMine:\t{State.HasHitMine}");
+            Output.WriteLine($"Revealed Tiles:\t{State.RevealedTiles}");
+
             Output.WriteLine("``` Full Game board");
 
             DrawColumnLegend();
-
-            for (int y = 0; y < State.Board.Height; y++)
+            for (int row = 0; row < State.Board.Height; row++)
             {
                 //draw prefix
-                Output.Write($"{(char)(65 + y)} ");
-                for (int x = 0; x < State.Board.Width; x++)
+                Output.Write($"{(char)(65 + row)} ");
+                for (int column = 0; column < State.Board.Width; column++)
                 {
-                    byte cellValue = State.Board.Field[y, x];
-
-                    //is it a mine?
-                    if ((cellValue & Board.MINE) == Board.MINE)
+                    //do we show it?
+                    if (State.Board.IsMine(row, column))
                     {
                         Output.Write('X');
                     }
-                    else if ((cellValue & Board.FLAG) == Board.FLAG)
-                    {
-                        Output.Write('F');
-                    }
                     else
                     {
-                        byte count = (byte)(cellValue & Board.NUMBER_MASK);
-
-                        if (count > 0)
+                        int adjacentMines = State.Board.AdjacentMineCount(row, column);
+                        if (adjacentMines == 0)
                         {
-                            Output.Write((int)count);
+                            Output.Write(' ');
                         }
                         else
                         {
-                            Output.Write('.');
+                            Output.Write(adjacentMines);
                         }
+
                     }
                 }
-
                 //draw suffix
-                Output.Write($" {(char)(65 + y)}");
-
-
+                Output.Write($" {(char)(65 + row)}");
                 Output.WriteLine();
             }
+
             DrawColumnLegend();
 
             Output.WriteLine("```");
@@ -147,17 +161,7 @@ namespace MineSweeper.Cgi
 
         private void DrawTitle()
         {
-            Output.WriteLine("# 💣 🧹 MineSweeper?");
-        }
-
-        private void DrawState()
-        {
-            var data = State.ToData();
-
-            Output.WriteLine("# State");
-            Output.WriteLine("```");
-            Output.WriteLine(data);
-            Output.WriteLine("```");
+            Output.WriteLine("# 💣 🧹 💥 MineSweeper ");
         }
 
     }

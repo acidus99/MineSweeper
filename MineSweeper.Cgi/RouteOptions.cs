@@ -9,6 +9,7 @@ namespace MineSweeper.Cgi
         public const string StartUrl = BaseCgiPath + StartRoute;
 
         public const string ClickRoute = "/click/";
+        public const string FlagRoute = "/flag/";
         public const string PlayRoute = "/play/";
         public const string StartRoute = "/start/";
 
@@ -18,5 +19,8 @@ namespace MineSweeper.Cgi
 		public static string ClickUrl(GameState state)
             => $"{BaseCgiPath}{ClickRoute}{WebUtility.UrlEncode(state.ToData())}/";
 
-	}
+        public static string FlagUrl(GameState state)
+            => $"{BaseCgiPath}{FlagRoute}{WebUtility.UrlEncode(state.ToData())}/";
+
+    }
 }

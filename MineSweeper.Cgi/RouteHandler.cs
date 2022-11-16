@@ -13,20 +13,20 @@ namespace MineSweeper.Cgi
             cgi.Redirect(RouteOptions.PlayUrl(state));
         }
 
-        public static void Click(CgiWrapper cgi)
+        public static void ClickTile(CgiWrapper cgi)
         {
             if(!cgi.HasQuery)
             {
-                cgi.Input("Enter coordinates, row, then column (e.g. \"DE\")");
+                cgi.Input("Click Tile: Enter coordinates, row, then column (e.g. \"DE\")");
                 return;
             }
-            GameState state = GetState(cgi, RouteOptions.PlayRoute);
+            GameState state = GetState(cgi, RouteOptions.ClickRoute);
             if (state == null)
             {
                 throw new ApplicationException("Bad state");
             }
             GameEngine engine = new GameEngine(state);
-            var move = engine.ParseClick(cgi.Query);
+            var move = engine.ParseClickTile(cgi.Query);
 
             if(move == null)
             {
@@ -35,7 +35,36 @@ namespace MineSweeper.Cgi
 
             cgi.Success();
 
-            engine.Click(move);
+            engine.UpdateState(move);
+
+            GameRenderer renderer = new GameRenderer(cgi.Writer);
+            renderer.DrawState(engine.State);
+            Footer(cgi);
+        }
+
+        public static void ToggleFlag(CgiWrapper cgi)
+        {
+            if (!cgi.HasQuery)
+            {
+                cgi.Input("Placee Flag: Enter coordinates, row, then column (e.g. \"DE\")");
+                return;
+            }
+            GameState state = GetState(cgi, RouteOptions.FlagRoute);
+            if (state == null)
+            {
+                throw new ApplicationException("Bad state");
+            }
+            GameEngine engine = new GameEngine(state);
+            var move = engine.ParsePlaceFlag(cgi.Query);
+
+            if (move == null)
+            {
+                throw new ApplicationException("Invalid Move");
+            }
+
+            cgi.Success();
+
+            engine.UpdateState(move);
 
             GameRenderer renderer = new GameRenderer(cgi.Writer);
             renderer.DrawState(engine.State);
@@ -73,7 +102,7 @@ namespace MineSweeper.Cgi
             if (data.Length > 1)
             {
                 //trim trailing path slash
-                data = cgi.PathInfo.Substring(0, routePrefix.Length - 1);
+                data = data.Substring(0, data.Length - 1);
             }
 
             return GameState.FromData(data);
