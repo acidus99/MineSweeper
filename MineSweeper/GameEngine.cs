@@ -21,6 +21,12 @@ namespace MineSweeper
             {
                 if (State.Board.IsShown(move.Row, move.Column))
                 {
+                    //clicking an already revealed tile that is ajacent to mines
+                    //so do "chording"
+                    if(State.Board.HasAdjacentMines(move.Row, move.Column))
+                    {
+                        RevealUnflaggedTiles(move.Row, move.Column);
+                    }
                     return;
                 }
                 RevealTile(move.Row, move.Column);
@@ -50,10 +56,14 @@ namespace MineSweeper
 
             if(count == 0)
             {
+
                 //Automatically expand out to reveal more, if those tiles aren't already visible
                 for (int rx = -1; rx <= 1; rx++)
                 {
                     int peekRow = row + rx;
+
+                    //because I'm going to do function calls, and this is recursive, lets do some sanity checking before calling the RevealTile/MarkAsShown
+                    //even though the MarkAsShown function does bounds checking
 
                     if (State.Board.IsValidRow(peekRow))
                     {
@@ -66,6 +76,41 @@ namespace MineSweeper
                             {
                                 RevealTile(peekRow, peekColumn);
                             }
+                        }
+                    }
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// Implments "chording" where surrounding, unflagged tiles are revealed as if you clicked them
+        /// </summary>
+        /// <param name="row"></param>
+        /// <param name="column"></param>
+        private void RevealUnflaggedTiles(int row, int column)
+        {
+            int adjacentFlags = 0;
+            for (int rx = -1; rx <= 1; rx++)
+            {
+                for(int cx = -1; cx <= 1; cx++)
+                {
+                    if(State.Board.IsFlag(row + rx, column + cx))
+                    {
+                        adjacentFlags++;
+                    }
+                }
+            }
+            //are all adjacent mines flagged?
+            if(State.Board.AdjacentMineCount(row, column) == adjacentFlags)
+            {
+                for (int rx = -1; rx <= 1; rx++)
+                {
+                    for (int cx = -1; cx <= 1; cx++)
+                    {
+                        if (!State.Board.IsFlag(row + rx, column + cx))
+                        {
+                            State.Board.MarkAsShown(row + rx, column + cx);
                         }
                     }
                 }

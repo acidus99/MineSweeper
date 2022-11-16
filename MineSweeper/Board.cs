@@ -101,6 +101,9 @@ namespace MineSweeper
         public bool IsValidColumn(int column)
             => column>= 0 && column< Width;
 
+        public bool HasAdjacentMines(int row, int column)
+            => !IsInBounds(row, column) ? false : (AdjacentMineCount(row, column) > 0);
+
         public int AdjacentMineCount(int row, int column)
         {
             if(!IsInBounds(row, column))
@@ -112,17 +115,21 @@ namespace MineSweeper
 
         public void MarkAsShown(int row, int column)
         {
-            Field[row, column] = (byte)(Field[row, column] | Board.SHOWN);
+            if (IsInBounds(row, column))
+            {
+                Field[row, column] = (byte)(Field[row, column] | Board.SHOWN);
+            }
         }
 
         public void ToggleFlag(int row, int column)
         {
-            Field[row, column] = (byte)(Field[row, column] ^ Board.FLAG);
+            if (IsInBounds(row, column))
+            {
+                Field[row, column] = (byte)(Field[row, column] ^ Board.FLAG);
+            }
         }
 
         private bool TileHasProperty(int row, int column, byte property)
             => (Field[row, column] & property) == property;
-
     }
 }
-
