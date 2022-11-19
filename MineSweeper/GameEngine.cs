@@ -10,6 +10,8 @@ namespace MineSweeper
             State = state;
         }
 
+        private bool[,] ChordCheck; 
+
         public void UpdateState(Move move)
         {
             if(!State.Board.IsInBounds(move.Row, move.Column))
@@ -25,6 +27,7 @@ namespace MineSweeper
                     //so do "chording"
                     if(State.Board.HasAdjacentMines(move.Row, move.Column))
                     {
+                        InitChordCheck();
                         RevealUnflaggedTiles(move.Row, move.Column);
                     }
                     return;
@@ -90,6 +93,8 @@ namespace MineSweeper
         /// <param name="column"></param>
         private void RevealUnflaggedTiles(int row, int column)
         {
+            ChordCheck[row, column] = true;
+
             int adjacentFlags = 0;
             for (int rx = -1; rx <= 1; rx++)
             {
@@ -108,11 +113,15 @@ namespace MineSweeper
                 {
                     for (int cx = -1; cx <= 1; cx++)
                     {
-                        if (!State.Board.IsFlag(row + rx, column + cx))
+                        int peekRow = row + rx;
+                        int peekColumn = column + cx;
+                        
+                        if (!State.Board.IsShown(peekRow,peekColumn) &&
+                            !State.Board.IsFlag(peekRow, peekColumn))
                         {
-                            State.Board.MarkAsShown(row + rx, column + cx);
+                            RevealTile(peekRow, peekColumn);
                         }
-                    }
+                   }
                 }
             }
         }
@@ -162,7 +171,17 @@ namespace MineSweeper
             return null;
         }
 
-
+        private void InitChordCheck()
+        {
+            ChordCheck = new bool[State.Board.Height, State.Board.Width];
+            for(int row = 0; row < State.Board.Height; row++)
+            {
+                for(int column =0; column < State.Board.Width; column++)
+                {
+                    ChordCheck[row, column] = false;
+                }
+            }
+        }
 
     }
 }
