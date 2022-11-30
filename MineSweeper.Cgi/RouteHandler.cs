@@ -92,13 +92,16 @@ namespace MineSweeper.Cgi
             //this accesses PATH_INFO, which, per the CGI spec, has already been URL decoded...
             //so we won't URL decode it again, since that will convert the "+" which is a valid BASE64 encoded
             //character into whitespace, which breaks Base64 decoding
-
             if(cgi.PathInfo.Length <= routePrefix.Length)
             {
                 return null;
             }
 
-            var data = cgi.PathInfo.Substring(routePrefix.Length);
+            //var data = cgi.PathInfo.Substring(routePrefix.Length);
+            //JetForce has an bug with how it generates PathInfo, so lets hack around it ourselves
+            // https://github.com/michael-lazar/jetforce/issues/69
+            var data = System.Net.WebUtility.UrlDecode(cgi.RequestUrl.AbsolutePath.Replace(cgi.ScriptName, ""));
+            data = data.Substring(routePrefix.Length);
             if (data.Length > 1)
             {
                 //trim trailing path slash
