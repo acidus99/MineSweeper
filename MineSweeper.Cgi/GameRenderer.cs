@@ -53,41 +53,41 @@ namespace MineSweeper.Cgi
             for(int row =0; row < State.Board.Height; row++)
             {
                 //draw prefix
-                Output.Write($"{(char)(65 + row)} ");
+                Output.Write($"{LegendCharacter(row)} ");
                 for (int column = 0; column < State.Board.Width; column++)
                 {
                     //do we show it?
                     if (State.Board.IsFlag(row, column))
                     {
-                        Output.Write('★');
+                        Output.Write("🚩");
                     }
                     else if (!State.Board.IsShown(row, column))
                     {
-                        Output.Write('·');
+                        Output.Write("· ");
                     }
                     else
                     { 
                         //is shown!
                         if (State.Board.IsMine(row, column))
                         {
-                            Output.Write('M');
+                            Output.Write("M ");
                         }
                         else
                         {
                             int adjacentMines = State.Board.AdjacentMineCount(row, column);
                             if(adjacentMines == 0)
                             {
-                                Output.Write(' ');
+                                Output.Write("  ");
                             } else
                             {
-                                Output.Write(adjacentMines);
+                                Output.Write(adjacentMines + " ");
                             }
                         }
                     }
                 }
 
                 //draw suffix
-                Output.Write($" {(char)(65 + row)}");
+                Output.Write($" {LegendCharacter(row)}");
 
                 Output.WriteLine();
             }
@@ -116,7 +116,7 @@ namespace MineSweeper.Cgi
             for (int row = 0; row < State.Board.Height; row++)
             {
                 //draw prefix
-                Output.Write($"{(char)(65 + row)} ");
+                Output.Write($"{LegendCharacter(row)} ");
                 for (int column = 0; column < State.Board.Width; column++)
                 {
                     //do we show it?
@@ -139,7 +139,7 @@ namespace MineSweeper.Cgi
                     }
                 }
                 //draw suffix
-                Output.Write($" {(char)(65 + row)}");
+                Output.Write($" {LegendCharacter(row)}");
                 Output.WriteLine();
             }
 
@@ -154,10 +154,15 @@ namespace MineSweeper.Cgi
             Output.Write("  ");
             for(int i=0; i < State.Board.Width; i++)
             {
-                Output.Write((char)(65 + i));
+                Output.Write(LegendCharacter(i));
+                Output.Write(' ');
             }
             Output.WriteLine();
         }
+
+
+        private char LegendCharacter(int offset)
+            => (char)(97 + offset);
 
         private void DrawTitle()
         {
