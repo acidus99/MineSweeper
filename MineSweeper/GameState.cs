@@ -45,12 +45,18 @@ namespace MineSweeper
                     data.Add(Board.Field[y, x]);
                 }
             }
-            return Convert.ToBase64String(GzipUtils.Compress(data.ToArray()));
+            return UrlSafeBase64Encode(GzipUtils.Compress(data.ToArray()));
         }
+
+        private static string UrlSafeBase64Encode(byte[] data)
+            => Convert.ToBase64String(data).Replace('+', '-').Replace("/", "_");
+
+        private static byte[] UrlSafeBase64Decode(string base64)
+            => Convert.FromBase64String(base64.Replace('-', '+').Replace("_", "/"));
 
         public static GameState FromData(string base64Data)
         {
-            var decoded = Convert.FromBase64String(base64Data);
+            var decoded = UrlSafeBase64Decode(base64Data);
             byte[] data = GzipUtils.Decompress(decoded);
 
             if (data[0] != '|' || data[3] != '|')
