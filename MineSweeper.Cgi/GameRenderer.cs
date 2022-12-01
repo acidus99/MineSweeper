@@ -21,7 +21,6 @@ namespace MineSweeper.Cgi
             DrawTitle();
             DrawStatus();
             DrawBoard();
-            DrawDebug();
         }
 
 
@@ -100,53 +99,6 @@ namespace MineSweeper.Cgi
                 Output.WriteLine($"=> {RouteOptions.ClickUrl(State)} Click Tile 🤞");
                 Output.WriteLine($"=> {RouteOptions.FlagUrl(State)} Place Flag 🚩");
             }
-        }
-
-        private void DrawDebug()
-        {
-
-            Output.WriteLine("## Debug Output");
-            Output.WriteLine($"IsComplete:\t{State.IsComplete}");
-            Output.WriteLine($"HasHitMine:\t{State.HasHitMine}");
-            Output.WriteLine($"Revealed Tiles:\t{State.RevealedTiles}");
-
-            Output.WriteLine("``` Full Game board");
-
-            DrawColumnLegend();
-            for (int row = 0; row < State.Board.Height; row++)
-            {
-                //draw prefix
-                Output.Write($"{LegendCharacter(row)} ");
-                for (int column = 0; column < State.Board.Width; column++)
-                {
-                    //do we show it?
-                    if (State.Board.IsMine(row, column))
-                    {
-                        Output.Write('X');
-                    }
-                    else
-                    {
-                        int adjacentMines = State.Board.AdjacentMineCount(row, column);
-                        if (adjacentMines == 0)
-                        {
-                            Output.Write(' ');
-                        }
-                        else
-                        {
-                            Output.Write(adjacentMines);
-                        }
-
-                    }
-                }
-                //draw suffix
-                Output.Write($" {LegendCharacter(row)}");
-                Output.WriteLine();
-            }
-
-            DrawColumnLegend();
-
-            Output.WriteLine("```");
-            Output.WriteLine();
         }
 
         private void DrawColumnLegend()
