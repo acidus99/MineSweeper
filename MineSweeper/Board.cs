@@ -17,6 +17,11 @@ namespace MineSweeper
 
         public byte[,] Field;
 
+        /// <summary>
+        /// What is the area of the board?
+        /// </summary>
+        public int Area => Width * Height;
+
         public Board( byte width, byte height)
         { 
             Width = width;
