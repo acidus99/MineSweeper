@@ -23,7 +23,6 @@ namespace MineSweeper.Cgi
             DrawBoard();
         }
 
-
         private void DrawStatus()
         {
             if(State.IsComplete)

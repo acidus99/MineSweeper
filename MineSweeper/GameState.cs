@@ -33,12 +33,14 @@ namespace MineSweeper
 
         public string ToData()
         {
-            var data = new List<byte>((Board.Height * Board.Width) + 4);
-            data.Add((byte)'|');
-            data.Add(Board.Width);
-            data.Add(Board.Height);
-            data.Add((byte)'|');
-            for(int y = 0; y<Board.Height; y++)
+            var data = new List<byte>((Board.Height * Board.Width) + 4)
+            {
+                (byte)'|',
+                Board.Width,
+                Board.Height,
+                (byte)'|'
+            };
+            for (int y = 0; y<Board.Height; y++)
             {
                 for(int x=0; x < Board.Width; x++)
                 {
