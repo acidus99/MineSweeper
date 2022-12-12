@@ -53,7 +53,9 @@ namespace MineSweeper.Cgi
 
             DrawColumnLegend();
 
-            for(int row =0; row < State.Board.Height; row++)
+            bool gameComplete = State.IsComplete;
+
+            for (int row =0; row < State.Board.Height; row++)
             {
                 //draw prefix
                 Output.Write($"{LegendCharacter(row)} ");
@@ -67,7 +69,7 @@ namespace MineSweeper.Cgi
                     else if (!State.Board.IsShown(row, column))
                     {
                         //if the game is over reveal all the unflagged mines
-                        if (State.IsComplete && State.Board.IsMine(row, column))
+                        if (gameComplete && State.Board.IsMine(row, column))
                         {
                             Output.Write(BombGlyph);
                         }
@@ -107,7 +109,7 @@ namespace MineSweeper.Cgi
 
             Output.WriteLine("```");
             Output.WriteLine();
-            if (!State.IsComplete)
+            if (!gameComplete)
             {
                 Output.WriteLine($"=> {RouteOptions.ClickUrl(State)} Click Tile 🤞");
                 Output.WriteLine($"=> {RouteOptions.FlagUrl(State)} Place Flag 🚩");

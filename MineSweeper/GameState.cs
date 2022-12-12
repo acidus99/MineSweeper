@@ -10,10 +10,13 @@ namespace MineSweeper
 
         //Is the game complete?
         public bool IsComplete
-            => HasHitMine || (ClearedMines == TotalMines);
+            => HasHitMine || HasUncoveredAllSafeSquares;
 
         //have they hit a mine?
         public bool HasHitMine { get; private set; } = false;
+
+        public bool HasUncoveredAllSafeSquares
+            => RevealedTiles == (Board.Area - TotalMines); 
 
         //how many mines are on the board?
         public int TotalMines { get; private set; } = 0;
