@@ -36,9 +36,7 @@ namespace MineSweeper.Cgi
             cgi.Success();
 
             engine.UpdateState(move);
-
-            GameRenderer renderer = new GameRenderer(cgi.Writer);
-            renderer.DrawState(engine.State);
+            RenderGame(cgi, engine.State);
             Footer(cgi);
         }
 
@@ -65,9 +63,7 @@ namespace MineSweeper.Cgi
             cgi.Success();
 
             engine.UpdateState(move);
-
-            GameRenderer renderer = new GameRenderer(cgi.Writer);
-            renderer.DrawState(engine.State);
+            RenderGame(cgi, engine.State);
             Footer(cgi);
         }
 
@@ -81,9 +77,7 @@ namespace MineSweeper.Cgi
             }
 
             cgi.Success();
-
-            GameRenderer renderer = new GameRenderer(cgi.Writer);
-            renderer.DrawState(state);
+            RenderGame(cgi, state);
             Footer(cgi);
         }
 
@@ -108,6 +102,15 @@ namespace MineSweeper.Cgi
             return GameState.FromData(data);
         }
 
+        private static void RenderGame(CgiWrapper cgi, GameState state)
+        {
+            GameRenderer renderer = new GameRenderer(cgi.Writer)
+            {
+                //if its not a CGI, we are debugging, so don't use emjoi
+                UseEmoji = CgiWrapper.IsRunningAsCgi
+            };
+            renderer.DrawState(state);
+        }
 
         static void Footer(CgiWrapper cgi)
         {

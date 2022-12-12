@@ -6,6 +6,11 @@ namespace MineSweeper.Cgi
 {
     public class GameRenderer
     {
+        /// <summary>
+        /// Should we use Emoji when drawing the game board glyphs?
+        /// </summary>
+        public bool UseEmoji = true;
+
         TextWriter Output;
         GameState State;
 
@@ -57,18 +62,18 @@ namespace MineSweeper.Cgi
                     //do we show it?
                     if (State.Board.IsFlag(row, column))
                     {
-                        Output.Write("🚩");
+                        Output.Write(FlagGlyph);
                     }
                     else if (!State.Board.IsShown(row, column))
                     {
                         //if the game is over reveal all the unflagged mines
                         if (State.IsComplete && State.Board.IsMine(row, column))
                         {
-                            //Output.Write("M ");
-                            Output.Write("💣");
-                        } else  
+                            Output.Write(BombGlyph);
+                        }
+                        else
                         {
-                            Output.Write("· ");
+                            Output.Write(UnseenGlyph);
                         }
                     }
                     else
@@ -77,8 +82,7 @@ namespace MineSweeper.Cgi
                         //if its a mine, then we clicked it, so show the boom!
                         if (State.Board.IsMine(row, column))
                         {
-                            //Output.Write("M ");
-                            Output.Write("💥");
+                            Output.Write(BoomGlyph);
                         }
                         else
                         {
@@ -110,6 +114,18 @@ namespace MineSweeper.Cgi
             }
         }
 
+        private string BombGlyph
+            => UseEmoji ? "💣" : "M ";
+
+        private string BoomGlyph
+            => UseEmoji ? "💥" : "M ";
+
+        private string FlagGlyph
+            => UseEmoji ? "🚩" : "X ";
+
+        private string UnseenGlyph
+            => UseEmoji ? "· " : ". ";
+
         private void DrawColumnLegend()
         {
             Output.Write("  ");
@@ -121,13 +137,12 @@ namespace MineSweeper.Cgi
             Output.WriteLine();
         }
 
-
         private char LegendCharacter(int offset)
             => (char)(97 + offset);
 
         private void DrawTitle()
         {
-            Output.WriteLine("# 💣 🧹 💥 MineSweeper ");
+            Output.WriteLine("# MineSweeper 💣 🧹 💥");
         }
 
     }
