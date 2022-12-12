@@ -117,7 +117,8 @@ namespace MineSweeper
                         int peekRow = row + rx;
                         int peekColumn = column + cx;
                         
-                        if (!State.Board.IsShown(peekRow,peekColumn) &&
+                        if (State.Board.IsInBounds(peekRow,peekColumn) &&
+                            !State.Board.IsShown(peekRow,peekColumn) &&
                             !State.Board.IsFlag(peekRow, peekColumn))
                         {
                             RevealTile(peekRow, peekColumn);
