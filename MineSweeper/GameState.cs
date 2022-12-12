@@ -5,8 +5,7 @@ namespace MineSweeper
     {
         public Board Board { get; set; }
 
-        //Is the game state valid?
-        public bool IsValid { get; private set; } = true;
+        public DateTime StartTime { get; set; }
 
         //Is the game complete?
         public bool IsComplete
@@ -36,14 +35,13 @@ namespace MineSweeper
 
         public string ToData()
         {
-            var data = new List<byte>((Board.Height * Board.Width) + 4)
-            {
-                (byte)'|',
-                Board.Width,
-                Board.Height,
-                (byte)'|'
-            };
-            for (int y = 0; y<Board.Height; y++)
+            var data = new List<byte>((Board.Height * Board.Width));
+            data.AddRange(BitConverter.GetBytes(StartTime.Ticks));
+            data.Add((byte)'|');
+            data.Add(Board.Width);
+            data.Add(Board.Height);
+            data.Add((byte)'|');
+            for (int y = 0; y < Board.Height; y++)
             {
                 for(int x=0; x < Board.Width; x++)
                 {
@@ -61,35 +59,39 @@ namespace MineSweeper
 
         public static GameState FromData(string base64Data)
         {
-            var decoded = UrlSafeBase64Decode(base64Data);
-            byte[] data = GzipUtils.Decompress(decoded);
-
-            if (data[0] != '|' || data[3] != '|')
+            try
             {
-                return new GameState
+                var decoded = UrlSafeBase64Decode(base64Data);
+                byte[] data = GzipUtils.Decompress(decoded);
+
+                if (data[8] != '|' || data[11] != '|')
                 {
-                    IsValid = false
-                };
-            }
-
-            var state = new GameState
-            {
-                Board = new Board(data[1], data[2])
-            };
-
-            int index = 4;
-            for (int row = 0; row < state.Board.Height; row++)
-            {
-                for (int column = 0; column < state.Board.Width; column++)
-                {
-                    state.Board.Field[row, column] = data[index];
-                    index++;
+                    return null;
                 }
+
+                var state = new GameState
+                {
+                    StartTime = new DateTime(BitConverter.ToInt64(data,0)),
+                    Board = new Board(data[9], data[10])
+                };
+
+                int index = 12;
+                for (int row = 0; row < state.Board.Height; row++)
+                {
+                    for (int column = 0; column < state.Board.Width; column++)
+                    {
+                        state.Board.Field[row, column] = data[index];
+                        index++;
+                    }
+                }
+
+                state.Refresh();
+                return state;
+
+            } catch (Exception)
+            {
+                return null;
             }
-
-            state.Refresh();
-
-            return state;
         }
 
         public void Refresh()
@@ -139,6 +141,7 @@ namespace MineSweeper
             board.GenerateNewBoard();
             return new GameState
             {
+                StartTime = DateTime.Now,
                 Board = board
             };
         }

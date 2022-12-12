@@ -45,6 +45,7 @@ namespace MineSweeper.Cgi
             {
                 Output.WriteLine($"Flags: {State.TotalFlags} Total Mines: {State.TotalMines}");
             }
+            Output.WriteLine($"Elasped Time: {Math.Truncate(DateTime.Now.Subtract(State.StartTime).TotalSeconds)} s");
         }
 
         private void DrawBoard()
