@@ -61,14 +61,24 @@ namespace MineSweeper.Cgi
                     }
                     else if (!State.Board.IsShown(row, column))
                     {
-                        Output.Write("· ");
+                        //if the game is over reveal all the unflagged mines
+                        if (State.IsComplete && State.Board.IsMine(row, column))
+                        {
+                            //Output.Write("M ");
+                            Output.Write("💣");
+                        } else  
+                        {
+                            Output.Write("· ");
+                        }
                     }
                     else
                     { 
                         //is shown!
+                        //if its a mine, then we clicked it, so show the boom!
                         if (State.Board.IsMine(row, column))
                         {
-                            Output.Write("M ");
+                            //Output.Write("M ");
+                            Output.Write("💥");
                         }
                         else
                         {
