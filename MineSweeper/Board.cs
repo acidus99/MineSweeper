@@ -17,7 +17,7 @@ namespace MineSweeper
 
         public byte[,] Field;
 
-        public Board( byte width = 15, byte height = 9)
+        public Board( byte width, byte height)
         { 
             Width = width;
             Height = height;

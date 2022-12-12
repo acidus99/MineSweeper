@@ -130,9 +130,9 @@ namespace MineSweeper
             }
         }
 
-        public static GameState CreateNewGame()
+        public static GameState CreateNewGame(byte width = 15, byte height = 9)
         {
-            var board = new Board();
+            var board = new Board(width, height);
             board.GenerateNewBoard();
             return new GameState
             {
