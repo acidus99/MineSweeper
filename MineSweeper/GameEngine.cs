@@ -116,7 +116,9 @@ namespace MineSweeper
                     {
                         int peekRow = row + rx;
                         int peekColumn = column + cx;
-                        
+
+                        //explicitly ensure peek is in bounds. Otherwise we recurse into areas we shouldn't
+                        //since IsShown and IsFlag return flase for out-of-bounds guesses
                         if (State.Board.IsInBounds(peekRow,peekColumn) &&
                             !State.Board.IsShown(peekRow,peekColumn) &&
                             !State.Board.IsFlag(peekRow, peekColumn))
