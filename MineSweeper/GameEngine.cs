@@ -19,13 +19,13 @@ namespace MineSweeper
                 return;
             }
 
-            if(move.IsClick)
+            if (move.IsClick)
             {
                 if (State.Board.IsShown(move.Row, move.Column))
                 {
                     //clicking an already revealed tile that is ajacent to mines
                     //so do "chording"
-                    if(State.Board.HasAdjacentMines(move.Row, move.Column))
+                    if (State.Board.HasAdjacentMines(move.Row, move.Column))
                     {
                         InitChordCheck();
                         RevealUnflaggedTiles(move.Row, move.Column);
@@ -33,7 +33,8 @@ namespace MineSweeper
                     return;
                 }
                 RevealTile(move.Row, move.Column);
-            } else
+            }
+            else if(!State.Board.IsShown(move.Row, move.Column))
             {
                 State.Board.ToggleFlag(move.Row, move.Column);
             }
