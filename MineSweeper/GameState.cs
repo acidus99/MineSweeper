@@ -1,4 +1,5 @@
 ﻿using System;
+using MineSweeper.Utils;
 namespace MineSweeper
 {
     public class GameState

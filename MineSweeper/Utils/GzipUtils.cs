@@ -1,7 +1,6 @@
-﻿using System;
-using System.IO;
-using System.IO.Compression;
-namespace MineSweeper
+﻿using System.IO.Compression;
+
+namespace MineSweeper.Utils
 {
 	public static class GzipUtils
 	{
