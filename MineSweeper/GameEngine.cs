@@ -170,17 +170,17 @@ namespace MineSweeper
         public static GameState CreateNewGame(int rows = 9, int columns = 9, int mines = 10)
         {
             //do validation
-            if (rows < 1 || rows > 255)
+            if (rows < 2 || rows > 26)
             {
-                throw new ArgumentException("Rows must be > 0 and < 256");
+                throw new ArgumentException("Rows must be between 2 and 26.");
             }
-            if (columns < 1 || columns> 255)
+            if (columns < 2 || columns > 26)
             {
-                throw new ArgumentException("Columns must be > 0 and < 256");
+                throw new ArgumentException("Columns must be between 2 and 26.");
             }
             if (mines < 1 || mines > 255 || (mines >= (rows * columns)))
             {
-                throw new ArgumentException("Mines must be > 0 and < 256 and cannot be more than the size of the board");
+                throw new ArgumentException("Mines must be between 1 and 256, and cannot be more than the size of the board.");
             }
 
             return new GameState
