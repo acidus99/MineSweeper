@@ -10,8 +10,6 @@ namespace MineSweeper
             State = state;
         }
 
-        private bool[,] ChordCheck; 
-
         public void UpdateState(Move move)
         {
             if(!State.Board.IsInBounds(move.Row, move.Column))
@@ -27,7 +25,6 @@ namespace MineSweeper
                     //so do "chording"
                     if (State.Board.HasAdjacentMines(move.Row, move.Column))
                     {
-                        InitChordCheck();
                         RevealUnflaggedTiles(move.Row, move.Column);
                     }
                     return;
@@ -60,7 +57,6 @@ namespace MineSweeper
 
             if(count == 0)
             {
-
                 //Automatically expand out to reveal more, if those tiles aren't already visible
                 for (int rx = -1; rx <= 1; rx++)
                 {
@@ -86,7 +82,6 @@ namespace MineSweeper
             }
         }
 
-
         /// <summary>
         /// Implments "chording" where surrounding, unflagged tiles are revealed as if you clicked them
         /// </summary>
@@ -94,8 +89,6 @@ namespace MineSweeper
         /// <param name="column"></param>
         private void RevealUnflaggedTiles(int row, int column)
         {
-            ChordCheck[row, column] = true;
-
             int adjacentFlags = 0;
             for (int rx = -1; rx <= 1; rx++)
             {
@@ -150,7 +143,6 @@ namespace MineSweeper
             return ret;
         }
 
-
         private Move ParseMove(string move)
         {
             if(move.Length != 2)
@@ -173,18 +165,6 @@ namespace MineSweeper
             }
 
             return null;
-        }
-
-        private void InitChordCheck()
-        {
-            ChordCheck = new bool[State.Board.Height, State.Board.Width];
-            for(int row = 0; row < State.Board.Height; row++)
-            {
-                for(int column =0; column < State.Board.Width; column++)
-                {
-                    ChordCheck[row, column] = false;
-                }
-            }
         }
 
         public static GameState CreateNewGame(int rows = 9, int columns = 9, int mines = 10)
