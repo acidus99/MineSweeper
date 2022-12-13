@@ -22,7 +22,5 @@ A few other things:
 * Gemini clients with keyboard shortcuts make for faster game play since you can quickly select either "click" or "flag" and then enter the row and column without needing to leave the keyboard.
 * Use flags! They help you keep track of where mines are, and they allow you to use chording, which speeds up the game by allowing multiple tiles to be revealed in a single turn.
 
-=> /cgi-bin/mines.cgi/start Start a new Game
-
 ---
 => mailto:acidus@gemi.dev Made with 💣 and ❤️ by Acidus
