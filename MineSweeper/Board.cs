@@ -22,67 +22,11 @@ namespace MineSweeper
         /// </summary>
         public int Area => Width * Height;
 
-        public Board( byte width, byte height)
+        internal Board( byte width, byte height)
         { 
             Width = width;
             Height = height;
             Field = new byte[Height, Width];
-        }
-
-        public static int GetSeed()
-            => Convert.ToInt32(DateTime.Now.Ticks & 0xFFFF);
-
-        public void GenerateNewBoard()
-            => GenerateNewBoard(GetSeed());
-
-        public void GenerateNewBoard(int seed)
-        {
-            Random rand = new Random(seed);
-
-            //init board
-            for (int y = 0; y < Height; y++)
-            {
-                for (int x = 0; x < Width; x++)
-                {
-                    Field[y, x] = 0;
-                }
-            }
-
-            Mines = 10;
-            int placed = 0;
-            while(placed < Mines)
-            {
-                int y = rand.Next(Height);
-                int x = rand.Next(Width);
-                if (Field[y,x] == 0)
-                {
-                    Field[y, x] = MINE;
-                    placed++;
-                }
-            }
-            //compute numbers
-            for (int y = 0; y < Height; y++)
-            {
-                for (int x = 0; x < Width; x++)
-                {
-                    if (Field[y, x] == 0)
-                    {
-                        byte count = 0;
-                        for (int my = -1; my < 2; my++)
-                        {
-                            for (int mx = -1; mx < 2; mx++)
-                            {
-                                if (IsMine(y + my, x + mx))
-                                {
-                                    count++;
-                                }
-                            }
-                        }
-                        Field[y, x] = count;
-                    }
-                }
-            }
-
         }
 
         //is the tile a mine?
@@ -136,5 +80,65 @@ namespace MineSweeper
 
         private bool TileHasProperty(int row, int column, byte property)
             => (Field[row, column] & property) == property;
+
+        /// <summary>
+        /// Generates a new board object, randomly populated with with mines
+        /// </summary>
+        /// <param name="rows"></param>
+        /// <param name="cols"></param>
+        /// <param name="mines"></param>
+        internal static Board GenerateNewBoard(int rows, int cols, int mines)
+        {
+           
+
+            var rand = new Random(Convert.ToInt32(DateTime.Now.Ticks & 0xFFFF));
+            var board = new Board(Convert.ToByte(cols), Convert.ToByte(rows));
+
+            //init board
+            for (int y = 0; y < board.Height; y++)
+            {
+                for (int x = 0; x < board.Width; x++)
+                {
+                    board.Field[y, x] = 0;
+                }
+            }
+
+            board.Mines = mines;
+            int placed = 0;
+            while (placed < board.Mines)
+            {
+                int y = rand.Next(board.Height);
+                int x = rand.Next(board.Width);
+                if (board.Field[y, x] == 0)
+                {
+                    board.Field[y, x] = MINE;
+                    placed++;
+                }
+            }
+            //compute and place adjacency numbers
+            for (int y = 0; y < board.Height; y++)
+            {
+                for (int x = 0; x < board.Width; x++)
+                {
+                    if (board.Field[y, x] == 0)
+                    {
+                        byte count = 0;
+                        for (int my = -1; my < 2; my++)
+                        {
+                            for (int mx = -1; mx < 2; mx++)
+                            {
+                                if (board.IsMine(y + my, x + mx))
+                                {
+                                    count++;
+                                }
+                            }
+                        }
+                        board.Field[y, x] = count;
+                    }
+                }
+            }
+
+            return board;
+        }
     }
 }
