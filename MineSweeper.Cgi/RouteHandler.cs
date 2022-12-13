@@ -9,7 +9,11 @@ namespace MineSweeper.Cgi
 
 		public static void StartGame(CgiWrapper cgi)
         {
-            GameState state = GameState.CreateNewGame();
+            var rows = 9;
+            var cols = 9;
+            var mines = 10;
+
+            GameState state = GameEngine.CreateNewGame(rows, cols, mines);
             cgi.Redirect(RouteOptions.PlayUrl(state));
         }
 

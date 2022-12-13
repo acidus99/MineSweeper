@@ -187,6 +187,30 @@ namespace MineSweeper
             }
         }
 
+        public static GameState CreateNewGame(int rows = 9, int columns = 9, int mines = 10)
+        {
+            //do validation
+            if (rows < 1 || rows > 255)
+            {
+                throw new ArgumentException("Rows must be > 0 and < 256");
+            }
+            if (columns < 1 || columns> 255)
+            {
+                throw new ArgumentException("Columns must be > 0 and < 256");
+            }
+            if (mines < 1 || mines > 255 || (mines >= (rows * columns)))
+            {
+                throw new ArgumentException("Mines must be > 0 and < 256 and cannot be more than the size of the board");
+            }
+
+            return new GameState
+            {
+                StartTime = DateTime.Now,
+                Board = Board.GenerateNewBoard(rows, columns, mines)
+            };
+        }
+
+
     }
 }
 
