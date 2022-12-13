@@ -10,6 +10,26 @@ namespace MineSweeper
             State = state;
         }
 
+        public Move ParseClickTile(string move)
+        {
+            var ret = ParseMove(move);
+            if (ret != null)
+            {
+                ret.IsClick = true;
+            }
+            return ret;
+        }
+
+        public Move ParsePlaceFlag(string move)
+        {
+            var ret = ParseMove(move);
+            if (ret != null)
+            {
+                ret.IsClick = false;
+            }
+            return ret;
+        }
+
         public void UpdateState(Move move)
         {
             if(!State.Board.IsInBounds(move.Row, move.Column))
@@ -121,26 +141,6 @@ namespace MineSweeper
                    }
                 }
             }
-        }
-
-        public Move ParseClickTile(string move)
-        {
-            var ret = ParseMove(move);
-            if(ret != null)
-            {
-                ret.IsClick = true;
-            }
-            return ret;
-        }
-
-        public Move ParsePlaceFlag(string move)
-        {
-            var ret = ParseMove(move);
-            if (ret != null)
-            {
-                ret.IsClick = false;
-            }
-            return ret;
         }
 
         private Move ParseMove(string move)
