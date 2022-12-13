@@ -30,25 +30,27 @@ namespace MineSweeper.Cgi
 
         private void DrawStatus()
         {
-
-            if(State.IsComplete)
+            if (State.IsComplete)
             {
-                if(State.HasHitMine)
+                if (State.HasHitMine)
                 {
                     Output.WriteLine("## 😧 💥 ☠️ ⚰️ 🪦");
                     Output.WriteLine("## You clicked on a mine! You are dead!");
-                    Output.WriteLine($"Mines Cleared {State.ClearedMines}");
-
-                    Output.WriteLine($"=> {RouteOptions.PlayUrl} Play another game");
-                } else
+                }
+                else
                 {
                     Output.WriteLine("## 🎉🎉 You Win! 🎉🎉 ");
                 }
-            } else
+                Output.WriteLine($"Mines Cleared {State.ClearedMines}");
+                Output.WriteLine($"{Completion} Time: {Math.Truncate(DateTime.Now.Subtract(State.StartTime).TotalSeconds)} s");
+                Output.WriteLine();
+                Output.WriteLine($"=> {RouteOptions.PlayUrl} Play another game");
+            }
+            else
             {
                 Output.WriteLine($"Total Mines: {State.TotalMines}.");
+                Output.WriteLine($"{Completion} Tiles Remaining: {State.RemainingTiles} Time: {Math.Truncate(DateTime.Now.Subtract(State.StartTime).TotalSeconds)} s");
             }
-            Output.WriteLine($"{Completion} Tiles Remaining: {State.RemainingTiles} Time: {Math.Truncate(DateTime.Now.Subtract(State.StartTime).TotalSeconds)} s");
         }
 
         private void DrawBoard()
