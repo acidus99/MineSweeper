@@ -11,11 +11,14 @@ namespace MineSweeper.Cgi
         public const string PlayRoute = "/play/";
         public const string StartRoute = "/start";
 
-        public static string StartUrl
-            => BaseCgiPath + StartRoute;
+        public static string RootUrl
+            => BaseCgiPath;
 
         public static string HowToUrl
             => BaseCgiPath + "/how-to.gmi";
+
+        public static string StartUrl(int rows, int columns, int mines)
+            => $"{BaseCgiPath}{StartRoute}?{rows},{columns},{mines}";
 
         public static string PlayUrl(GameState state)
             => $"{BaseCgiPath}{PlayRoute}{WebUtility.UrlEncode(state.ToData())}/";

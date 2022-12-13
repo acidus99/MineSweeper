@@ -1,6 +1,10 @@
 # MineSweeper
 
-=> /cgi-bin/mines.cgi/start Start a new Game
+=> /cgi-bin/mines.cgi/start?9,9,10 Start a new Game (Easy)
+=> /cgi-bin/mines.cgi/start?16,16,40 Start a new Game (Medium)
+=> /cgi-bin/mines.cgi/start?16,26,85 Start a new Game (Hard)
+=> /cgi-bin/mines.cgi/start Start a custom Game
+
 => /cgi-bin/mines.cgi/how-to.gmi How to play
 
 ---

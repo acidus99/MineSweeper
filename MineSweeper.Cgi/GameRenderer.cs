@@ -44,7 +44,7 @@ namespace MineSweeper.Cgi
                 Output.WriteLine($"Mines Cleared {State.ClearedMines}");
                 Output.WriteLine($"{Completion} Time: {Math.Truncate(DateTime.Now.Subtract(State.StartTime).TotalSeconds)} s");
                 Output.WriteLine();
-                Output.WriteLine($"=> {RouteOptions.PlayUrl} Play another game");
+                Output.WriteLine($"=> {RouteOptions.StartUrl(State.Board.Height, State.Board.Width, State.TotalMines)} Play another game");
             }
             else
             {
