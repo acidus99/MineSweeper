@@ -32,6 +32,12 @@ namespace MineSweeper
 
         public void UpdateState(Move move)
         {
+            if(move.IsCheat)
+            {
+                AutoWin();
+                return;
+            }
+
             if(!State.Board.IsInBounds(move.Row, move.Column))
             {
                 return;
@@ -143,8 +149,33 @@ namespace MineSweeper
             }
         }
 
+        private void AutoWin()
+        {
+            State.IsCheat = true;
+            for (int row = 0; row < State.Board.Height; row++)
+            {
+                for (int column = 0; column < State.Board.Width; column++)
+                {
+                    //what's in this tile?
+                    if (!State.Board.IsMine(row, column))
+                    {
+                        State.Board.MarkAsShown(row, column);
+                    } else
+                    {
+                        State.Board.ToggleFlag(row, column);
+                    }
+                }
+            }
+            State.Refresh();
+        }
+
         private Move ParseMove(string move)
         {
+            if(move.ToLower() == "xyzzy")
+            {
+                return new Move { IsCheat = true };
+            }
+
             if(move.Length != 2)
             {
                 return null;
@@ -189,8 +220,5 @@ namespace MineSweeper
                 Board = Board.GenerateNewBoard(rows, columns, mines)
             };
         }
-
-
     }
 }
-

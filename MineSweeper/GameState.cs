@@ -42,6 +42,8 @@ namespace MineSweeper
         /// </summary>
         public int TotalMines { get; private set; } = 0;
 
+        public bool IsCheat { get; set; }
+
         public string ToData()
         {
             var data = new List<byte>((Board.Height * Board.Width));

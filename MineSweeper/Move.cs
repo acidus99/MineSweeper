@@ -7,6 +7,8 @@ namespace MineSweeper
         public bool IsClick { get; set; } = true;
         public byte Row { get; set; }
         public byte Column { get; set; }
+
+        public bool IsCheat { get; set; } = false;
     }
 }
 

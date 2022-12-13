@@ -40,6 +40,10 @@ namespace MineSweeper.Cgi
                 else
                 {
                     Output.WriteLine("## 🎉🎉 You Win! 🎉🎉 ");
+                    if(State.IsCheat)
+                    {
+                        Output.WriteLine("... but at the cost of your integrity");
+                    }
                 }
                 Output.WriteLine($"Mines Cleared {State.ClearedMines}");
                 Output.WriteLine($"{Completion} Time: {Math.Truncate(DateTime.Now.Subtract(State.StartTime).TotalSeconds)} s");
