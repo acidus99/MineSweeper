@@ -30,6 +30,7 @@ namespace MineSweeper.Cgi
 
         private void DrawStatus()
         {
+
             if(State.IsComplete)
             {
                 if(State.HasHitMine)
@@ -37,15 +38,17 @@ namespace MineSweeper.Cgi
                     Output.WriteLine("## 😧 💥 ☠️ ⚰️ 🪦");
                     Output.WriteLine("## You clicked on a mine! You are dead!");
                     Output.WriteLine($"Mines Cleared {State.ClearedMines}");
+
+                    Output.WriteLine($"=> {RouteOptions.PlayUrl} Play another game");
                 } else
                 {
                     Output.WriteLine("## 🎉🎉 You Win! 🎉🎉 ");
                 }
             } else
             {
-                Output.WriteLine($"Flags: {State.TotalFlags} Total Mines: {State.TotalMines}");
+                Output.WriteLine($"Total Mines: {State.TotalMines}.");
             }
-            Output.WriteLine($"Elasped Time: {Math.Truncate(DateTime.Now.Subtract(State.StartTime).TotalSeconds)} s");
+            Output.WriteLine($"{Completion} Tiles Remaining: {State.RemainingTiles} Time: {Math.Truncate(DateTime.Now.Subtract(State.StartTime).TotalSeconds)} s");
         }
 
         private void DrawBoard()
@@ -128,6 +131,9 @@ namespace MineSweeper.Cgi
 
         private string UnseenGlyph
             => UseEmoji ? "· " : ". ";
+
+        private string Completion
+            => string.Format("{0:0.0}%", ((Convert.ToDouble(State.RevealedTiles) / Convert.ToDouble(State.SafeTiles))) * 100.0d);
 
         private void DrawColumnLegend()
         {

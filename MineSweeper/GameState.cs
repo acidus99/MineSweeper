@@ -7,31 +7,39 @@ namespace MineSweeper
 
         public DateTime StartTime { get; set; }
 
-        //Is the game complete?
-        public bool IsComplete
-            => HasHitMine || HasUncoveredAllSafeSquares;
+        //How many mines have correctly been flagged?
+        public int ClearedMines { get; private set; } = 0;
 
         //have they hit a mine?
         public bool HasHitMine { get; private set; } = false;
 
-        public bool HasUncoveredAllSafeSquares
-            => RevealedTiles == (Board.Area - TotalMines); 
+        //Is the game complete?
+        public bool IsComplete
+            => HasHitMine || (RevealedTiles == SafeTiles);
 
-        //how many mines are on the board?
-        public int TotalMines { get; private set; } = 0;
+        /// <summary>
+        /// How many tiles in this game don't contain a bomb?
+        /// </summary>
+        public int SafeTiles
+            => (Board.Area - TotalMines);
 
-        //how many flags are deployed?
+        public int RemainingTiles
+            => SafeTiles - RevealedTiles;
+
+        /// <summary>
+        /// How many titles in the board are visible?
+        /// </summary>
+        public int RevealedTiles { get; internal set; } = 0;
+
+        /// <summary>
+        /// how many flags are deployed?
+        /// </summary>
         public int TotalFlags { get; private set; } = 0;
 
-        //How many mines have correctly been flagged?
-        public int ClearedMines { get; private set; } = 0;
-
-        //How many mines left does the player think they have?
-        public int MinesLeft
-            => TotalFlags - TotalMines;
-
-        //How many titles in the board are visible?
-        public int RevealedTiles { get; internal set; } = 0;
+        /// <summary>
+        /// how many mines are on the board?
+        /// </summary>
+        public int TotalMines { get; private set; } = 0;
 
         public string ToData()
         {
