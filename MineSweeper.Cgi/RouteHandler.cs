@@ -51,7 +51,8 @@ namespace MineSweeper.Cgi
 
             if(move == null)
             {
-                throw new ApplicationException("Invalid Move");
+                cgi.Failure("Invalid move. Must specify 1 row and 1 column. (e.g. \"DE\")");
+                return;
             }
 
             cgi.Success();
@@ -78,7 +79,7 @@ namespace MineSweeper.Cgi
 
             if (move == null)
             {
-                throw new ApplicationException("Invalid Move");
+                cgi.Failure("Invalid move. Must specify 1 row and 1 column. (e.g. \"DE\")");
             }
 
             cgi.Success();
@@ -87,7 +88,6 @@ namespace MineSweeper.Cgi
             RenderGame(cgi, engine.State);
             Footer(cgi);
         }
-
 
         public static void PlayGame(CgiWrapper cgi)
         {
