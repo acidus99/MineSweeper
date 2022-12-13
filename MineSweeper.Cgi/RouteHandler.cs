@@ -116,6 +116,9 @@ namespace MineSweeper.Cgi
         {
             cgi.Writer.WriteLine();
             cgi.Writer.WriteLine("--");
+            cgi.Writer.WriteLine($"=> {RouteOptions.StartUrl} Play New Game");
+            cgi.Writer.WriteLine($"=> {RouteOptions.HowToUrl} How To Play");
+            cgi.Writer.WriteLine("--");
             cgi.Writer.WriteLine("=> mailto:acidus@gemi.dev Made with 💣 and ❤️ by Acidus");
         }
     }

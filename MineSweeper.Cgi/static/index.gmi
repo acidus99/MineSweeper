@@ -1,0 +1,7 @@
+# MineSweeper
+
+=> /cgi-bin/mines.cgi/start Start a new Game
+=> /cgi-bin/mines.cgi/how-to.gmi How to play
+
+---
+=> mailto:acidus@gemi.dev Made with 💣 and ❤️ by Acidus

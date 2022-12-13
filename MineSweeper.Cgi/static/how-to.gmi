@@ -1,0 +1,28 @@
+# How to Play MineSweeper
+
+MineSweeper is a Gemini-port for the classic computer game Minesweeper.
+=> /cgi-bin/wp.cgi/view?Minesweeper%20%28video%20game%29 Minesweeper on Gemipedia
+
+Game mechanics:
+* Your job is to uncover all the tiles on the board that don't contain a mine. 
+* Clicking on a mine loses the game.
+* Clicking on every tile that doesn't contain a mine wins the game.
+* Clicking on a tile will show the number of mines adjacent to that tile.
+* If you believe a tile contains a mine, you can place a flag on it to remind you.,
+* Clicking on a tile that doesn't have an adjacent mines will click surrounding tiles automatically,
+* Clicking on a tile that already shows a number, and which has that same number of flags on adjacent tiles, will click surrounding tiles automatically. This is called Chording.
+
+Controls:
+* Use the "Click Tile" link to click on a tile
+* Use the "Place Flag" link to place or remove a flag
+* You specify tiles using their row and column. "GC" would refer to row G, column C.
+
+A few other things:
+* Elapsed time is tracked so you can race yourself!
+* Gemini clients with keyboard shortcuts make for faster game play since you can quickly select either "click" or "flag" and then enter the row and column without needing to leave the keyboard.
+* Use flags! They help you keep track of where mines are, and they allow you to use chording, which speeds up the game by allowing multiple tiles to be revealed in a single turn.
+
+=> /cgi-bin/mines.cgi/start Start a new Game
+
+---
+=> mailto:acidus@gemi.dev Made with 💣 and ❤️ by Acidus
