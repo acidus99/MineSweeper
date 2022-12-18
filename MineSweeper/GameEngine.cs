@@ -176,14 +176,41 @@ namespace MineSweeper
                 return new Move { IsCheat = true };
             }
 
-            if(move.Length != 2)
+            //if we don't have 2 letters, its bad
+            if(move.Length != 2 || !Char.IsLetter(move[0]) || !Char.IsLetter(move[1]))
             {
                 return null;
             }
-            move = move.ToUpper();
 
-            byte row = (byte)(move[0] - 65);
-            byte col = (byte)(move[1] - 65);
+            byte row = 0;
+            byte col = 0;
+
+            //are both letters the same case? if so, its "[row][column]"
+            if ((Char.IsLower(move[0]) && Char.IsLower(move[1])) ||
+                (Char.IsUpper(move[0]) && Char.IsUpper(move[1])))
+            {
+                move = move.ToUpper();
+                row = (byte)(move[0] - 65);
+                col = (byte)(move[1] - 65);
+            }
+            else
+            {
+                //one lower, one upper
+                if (Char.IsLower(move[0]))
+                {
+                    //row, col
+                    move = move.ToUpper();
+                    row = (byte)(move[0] - 65);
+                    col = (byte)(move[1] - 65);
+                }
+                else
+                {
+                    //col, row
+                    move = move.ToUpper();
+                    col = (byte)(move[0] - 65);
+                    row = (byte)(move[1] - 65);
+                }
+            }
 
             if(row >=0 && row < State.Board.Height &&
                 col >= 0 && col < State.Board.Width)

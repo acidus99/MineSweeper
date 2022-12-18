@@ -146,14 +146,17 @@ namespace MineSweeper.Cgi
             Output.Write("  ");
             for(int i=0; i < State.Board.Width; i++)
             {
-                Output.Write(LegendCharacter(i));
+                //columns are uppercase!
+                Output.Write(LegendCharacter(i, true));
                 Output.Write(' ');
             }
             Output.WriteLine();
         }
 
-        private char LegendCharacter(int offset)
-            => (char)(97 + offset);
+        private char LegendCharacter(int offset, bool isUpper = false)
+            => (isUpper) ?
+                (char)(65 + offset) :
+                (char)(97 + offset);
 
         private void DrawTitle()
         {

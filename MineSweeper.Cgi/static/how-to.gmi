@@ -15,11 +15,12 @@ Game mechanics:
 Controls:
 * Use the "Click Tile" link to click on a tile
 * Use the "Place Flag" link to place or remove a flag
-* You specify tiles using their row and column. "GC" would refer to row G, column C.
+* You specify tiles using their row and column. "gc" and "GC" would both refer to row G, column C.
 
 A few other things:
 * Elapsed time is tracked so you can race yourself!
 * Gemini clients with keyboard shortcuts make for faster game play since you can quickly select either "click" or "flag" and then enter the row and column without needing to leave the keyboard.
+* Notice that rows use lower case letters, while columns use uppercase letters. While the primary way to specify a tile is their row and then columnn, you can put them in any order you want if you use proper casing. (e.g. "Hf" means Row F and column H). This may make it faster to enter cooridinates. (Personally I always use "[row][column]")
 * Use flags! They help you keep track of where mines are, and they allow you to use chording, which speeds up the game by allowing multiple tiles to be revealed in a single turn.
 * There is a cheat code, but at what cost?
 
