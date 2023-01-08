@@ -171,6 +171,9 @@ namespace MineSweeper
 
         private Move ParseMove(string move)
         {
+            //some phone/tabley keyboards will add a space when you tell it not to autocorrect the input
+            move = move.Trim();
+
             if(move.ToLower() == "xyzzy")
             {
                 return new Move { IsCheat = true };
