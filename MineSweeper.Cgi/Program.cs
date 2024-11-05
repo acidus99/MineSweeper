@@ -1,18 +1,17 @@
 ﻿using Gemini.Cgi;
 
-namespace MineSweeper.Cgi
+namespace MineSweeper.Cgi;
+
+internal class Program
 {
-    class Program
+    private static void Main(string[] args)
     {
-        static void Main(string[] args)
-        {
-            var router = new CgiRouter();
-            router.SetStaticRoot("static/");
-            router.OnRequest(RouteOptions.StartRoute, RouteHandler.StartGame);
-            router.OnRequest(RouteOptions.PlayRoute, RouteHandler.PlayGame);
-            router.OnRequest(RouteOptions.ClickRoute, RouteHandler.ClickTile);
-            router.OnRequest(RouteOptions.FlagRoute, RouteHandler.ToggleFlag);
-            router.ProcessRequest();
-        }
+        var router = new CgiRouter();
+        router.SetStaticRoot("static/");
+        router.OnRequest(RouteOptions.StartRoute, RouteHandler.StartGame);
+        router.OnRequest(RouteOptions.PlayRoute, RouteHandler.PlayGame);
+        router.OnRequest(RouteOptions.ClickRoute, RouteHandler.ClickTile);
+        router.OnRequest(RouteOptions.FlagRoute, RouteHandler.ToggleFlag);
+        router.ProcessRequest();
     }
 }

@@ -1,168 +1,159 @@
 ﻿using System;
-
 using MineSweeper;
 
-namespace MineSweeper.Cgi
+namespace MineSweeper.Cgi;
+
+public class GameRenderer
 {
-    public class GameRenderer
+    private TextWriter _output;
+    private GameState _state;
+
+    /// <summary>
+    /// Should we use Emoji when drawing the game board glyphs?
+    /// </summary>
+    public bool UseEmoji = true;
+
+    public GameRenderer(TextWriter output)
     {
-        /// <summary>
-        /// Should we use Emoji when drawing the game board glyphs?
-        /// </summary>
-        public bool UseEmoji = true;
+        _output = output;
+    }
 
-        TextWriter Output;
-        GameState State;
+    private string BombGlyph
+        => UseEmoji ? "💣" : "M ";
 
-        public GameRenderer(TextWriter output)
+    private string BoomGlyph
+        => UseEmoji ? "💥" : "M ";
+
+    private string FlagGlyph
+        => UseEmoji ? "🚩" : "X ";
+
+    private string UnseenGlyph
+        => UseEmoji ? "· " : ". ";
+
+    private string Completion
+        => string.Format("{0:0.0}%",
+            Convert.ToDouble(_state.RevealedTiles) / Convert.ToDouble(_state.SafeTiles) * 100.0d);
+
+    public void DrawState(GameState state)
+    {
+        _state = state;
+
+        DrawTitle();
+        DrawStatus();
+        DrawBoard();
+    }
+
+    private void DrawStatus()
+    {
+        if (_state.IsComplete)
         {
-            Output = output;
-        }
-
-        public void DrawState(GameState state)
-        {
-            State = state;
-        
-            DrawTitle();
-            DrawStatus();
-            DrawBoard();
-        }
-
-        private void DrawStatus()
-        {
-            if (State.IsComplete)
+            if (_state.HasHitMine)
             {
-                if (State.HasHitMine)
-                {
-                    Output.WriteLine("## 😧 💥 ☠️ ⚰️ 🪦");
-                    Output.WriteLine("## You clicked on a mine! You are dead!");
-                }
-                else
-                {
-                    Output.WriteLine("## 🎉🎉 You Win! 🎉🎉 ");
-                    if(State.IsCheat)
-                    {
-                        Output.WriteLine("... but at the cost of your integrity");
-                    }
-                }
-                Output.WriteLine($"Mines Cleared {State.ClearedMines}");
-                Output.WriteLine($"{Completion} Time: {Math.Truncate(DateTime.Now.Subtract(State.StartTime).TotalSeconds)} s");
-                Output.WriteLine();
-                Output.WriteLine($"=> {RouteOptions.StartUrl(State.Board.Height, State.Board.Width, State.TotalMines)} Play another game");
+                _output.WriteLine("## 😧 💥 ☠️ ⚰️ 🪦");
+                _output.WriteLine("## You clicked on a mine! You are dead!");
             }
             else
             {
-                Output.WriteLine($"Total Mines: {State.TotalMines}.");
-                Output.WriteLine($"{Completion} Tiles Remaining: {State.RemainingTiles} Time: {Math.Truncate(DateTime.Now.Subtract(State.StartTime).TotalSeconds)} s");
+                _output.WriteLine("## 🎉🎉 You Win! 🎉🎉 ");
+                if (_state.IsCheat) _output.WriteLine("... but at the cost of your integrity");
             }
+
+            _output.WriteLine($"Mines Cleared {_state.ClearedMines}");
+            _output.WriteLine(
+                $"{Completion} Time: {Math.Truncate(DateTime.Now.Subtract(_state.StartTime).TotalSeconds)} s");
+            _output.WriteLine();
+            _output.WriteLine(
+                $"=> {RouteOptions.StartUrl(_state.Board.Height, _state.Board.Width, _state.TotalMines)} Play another game");
         }
-
-        private void DrawBoard()
+        else
         {
-            Output.WriteLine("``` Game board");
+            _output.WriteLine($"Total Mines: {_state.TotalMines}.");
+            _output.WriteLine(
+                $"{Completion} Tiles Remaining: {_state.RemainingTiles} Time: {Math.Truncate(DateTime.Now.Subtract(_state.StartTime).TotalSeconds)} s");
+        }
+    }
 
-            DrawColumnLegend();
+    private void DrawBoard()
+    {
+        _output.WriteLine("``` Game board");
 
-            bool gameComplete = State.IsComplete;
+        DrawColumnLegend();
 
-            for (int row =0; row < State.Board.Height; row++)
-            {
-                //draw prefix
-                Output.Write($"{LegendCharacter(row)} ");
-                for (int column = 0; column < State.Board.Width; column++)
+        var gameComplete = _state.IsComplete;
+
+        for (var row = 0; row < _state.Board.Height; row++)
+        {
+            //draw prefix
+            _output.Write($"{LegendCharacter(row)} ");
+            for (var column = 0; column < _state.Board.Width; column++)
+                //do we show it?
+                if (_state.Board.IsFlag(row, column))
                 {
-                    //do we show it?
-                    if (State.Board.IsFlag(row, column))
+                    _output.Write(FlagGlyph);
+                }
+                else if (!_state.Board.IsShown(row, column))
+                {
+                    //if the game is over reveal all the unflagged mines
+                    if (gameComplete && _state.Board.IsMine(row, column))
+                        _output.Write(BombGlyph);
+                    else
+                        _output.Write(UnseenGlyph);
+                }
+                else
+                {
+                    //is shown!
+                    //if its a mine, then we clicked it, so show the boom!
+                    if (_state.Board.IsMine(row, column))
                     {
-                        Output.Write(FlagGlyph);
-                    }
-                    else if (!State.Board.IsShown(row, column))
-                    {
-                        //if the game is over reveal all the unflagged mines
-                        if (gameComplete && State.Board.IsMine(row, column))
-                        {
-                            Output.Write(BombGlyph);
-                        }
-                        else
-                        {
-                            Output.Write(UnseenGlyph);
-                        }
+                        _output.Write(BoomGlyph);
                     }
                     else
-                    { 
-                        //is shown!
-                        //if its a mine, then we clicked it, so show the boom!
-                        if (State.Board.IsMine(row, column))
-                        {
-                            Output.Write(BoomGlyph);
-                        }
+                    {
+                        var adjacentMines = _state.Board.AdjacentMineCount(row, column);
+                        if (adjacentMines == 0)
+                            _output.Write("  ");
                         else
-                        {
-                            int adjacentMines = State.Board.AdjacentMineCount(row, column);
-                            if(adjacentMines == 0)
-                            {
-                                Output.Write("  ");
-                            } else
-                            {
-                                Output.Write(adjacentMines + " ");
-                            }
-                        }
+                            _output.Write(adjacentMines + " ");
                     }
                 }
 
-                //draw suffix
-                Output.Write($" {LegendCharacter(row)}");
+            //draw suffix
+            _output.Write($" {LegendCharacter(row)}");
 
-                Output.WriteLine();
-            }
-            DrawColumnLegend();
-
-            Output.WriteLine("```");
-            Output.WriteLine();
-            if (!gameComplete)
-            {
-                Output.WriteLine($"=> {RouteOptions.ClickUrl(State)} Click Tile 🤞");
-                Output.WriteLine($"=> {RouteOptions.FlagUrl(State)} Place Flag 🚩");
-            }
+            _output.WriteLine();
         }
 
-        private string BombGlyph
-            => UseEmoji ? "💣" : "M ";
+        DrawColumnLegend();
 
-        private string BoomGlyph
-            => UseEmoji ? "💥" : "M ";
-
-        private string FlagGlyph
-            => UseEmoji ? "🚩" : "X ";
-
-        private string UnseenGlyph
-            => UseEmoji ? "· " : ". ";
-
-        private string Completion
-            => string.Format("{0:0.0}%", ((Convert.ToDouble(State.RevealedTiles) / Convert.ToDouble(State.SafeTiles))) * 100.0d);
-
-        private void DrawColumnLegend()
+        _output.WriteLine("```");
+        _output.WriteLine();
+        if (!gameComplete)
         {
-            Output.Write("  ");
-            for(int i=0; i < State.Board.Width; i++)
-            {
-                //columns are uppercase!
-                Output.Write(LegendCharacter(i, true));
-                Output.Write(' ');
-            }
-            Output.WriteLine();
+            _output.WriteLine($"=> {RouteOptions.ClickUrl(_state)} Click Tile 🤞");
+            _output.WriteLine($"=> {RouteOptions.FlagUrl(_state)} Place Flag 🚩");
         }
+    }
 
-        private char LegendCharacter(int offset, bool isUpper = false)
-            => (isUpper) ?
-                (char)(65 + offset) :
-                (char)(97 + offset);
-
-        private void DrawTitle()
+    private void DrawColumnLegend()
+    {
+        _output.Write("  ");
+        for (var i = 0; i < _state.Board.Width; i++)
         {
-            Output.WriteLine("# MineSweeper 💣 🧹 💥");
+            //columns are uppercase!
+            _output.Write(LegendCharacter(i, true));
+            _output.Write(' ');
         }
 
+        _output.WriteLine();
+    }
+
+    private char LegendCharacter(int offset, bool isUpper = false)
+    {
+        return isUpper ? (char)(65 + offset) : (char)(97 + offset);
+    }
+
+    private void DrawTitle()
+    {
+        _output.WriteLine("# MineSweeper 💣 🧹 💥");
     }
 }
-

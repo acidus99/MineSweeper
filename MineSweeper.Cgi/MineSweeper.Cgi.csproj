@@ -1,34 +1,34 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-  </PropertyGroup>
-  
-  <PropertyGroup Condition="'$(Configuration)'=='Release'">
-    <DebugSymbols>False</DebugSymbols>
-    <DebugType>None</DebugType>
-  </PropertyGroup>
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\Gemini.Cgi\Gemini.Cgi.csproj" />
-    <ProjectReference Include="..\MineSweeper\MineSweeper.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Remove="static\" />
-    <None Remove="static\index.gmi" />
-    <None Remove="static\how-to.gmi" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="static\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="static\index.gmi">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="static\how-to.gmi">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
+    <PropertyGroup Condition="'$(Configuration)'=='Release'">
+        <DebugSymbols>False</DebugSymbols>
+        <DebugType>None</DebugType>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\Gemini.Cgi\Gemini.Cgi.csproj"/>
+        <ProjectReference Include="..\MineSweeper\MineSweeper.csproj"/>
+    </ItemGroup>
+    <ItemGroup>
+        <None Remove="static\"/>
+        <None Remove="static\index.gmi"/>
+        <None Remove="static\how-to.gmi"/>
+    </ItemGroup>
+    <ItemGroup>
+        <Folder Include="static\"/>
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="static\index.gmi">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Include="static\how-to.gmi">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
 </Project>
