@@ -64,7 +64,7 @@ public static class RouteHandler
     {
         if (!cgi.HasQuery)
         {
-            cgi.Input("Placee Flag: Enter coordinates, row, then column (e.g. \"DE\")");
+            cgi.Input("Place Flag: Enter coordinates, row, then column (e.g. \"DE\")");
             return;
         }
 
