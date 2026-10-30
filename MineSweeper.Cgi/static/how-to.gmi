@@ -8,8 +8,8 @@ Game mechanics:
 * Clicking on a mine loses the game.
 * Clicking on every tile that doesn't contain a mine wins the game.
 * Clicking on a tile will show the number of mines adjacent to that tile.
-* If you believe a tile contains a mine, you can place a flag on it to remind you.,
-* Clicking on a tile that doesn't have an adjacent mines will click surrounding tiles automatically,
+* If you believe a tile contains a mine, you can place a flag on it to remind you.
+* Clicking on a tile that doesn't have an adjacent mine will click surrounding tiles automatically.
 * Clicking on a tile that already shows a number, and which has that same number of flags on adjacent tiles, will click surrounding tiles automatically. This is called Chording.
 
 Controls:
@@ -19,8 +19,8 @@ Controls:
 
 A few other things:
 * Elapsed time is tracked so you can race yourself!
-* Gemini clients with keyboard shortcuts make for faster game play since you can quickly select either "click" or "flag" and then enter the row and column without needing to leave the keyboard.
-* Notice that rows use lower case letters, while columns use uppercase letters. While the primary way to specify a tile is their row and then columnn, you can put them in any order you want if you use proper casing. (e.g. "Hf" means Row F and column H). This may make it faster to enter cooridinates. (Personally I always use "[row][column]")
+* Gemini clients with keyboard shortcuts make for faster gameplay since you can quickly select either "click" or "flag" and then enter the row and column without needing to leave the keyboard.
+* Notice that rows use lowercase letters, while columns use uppercase letters. While the primary way to specify a tile is the row and then column, you can put them in any order you want if you use proper casing. (e.g. "Hf" means Row F and column H). This may make it faster to enter coordinates. (Personally I always use "[row][column]")
 * Use flags! They help you keep track of where mines are, and they allow you to use chording, which speeds up the game by allowing multiple tiles to be revealed in a single turn.
 * There is a cheat code, but at what cost?
 
